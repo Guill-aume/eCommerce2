@@ -1,6 +1,7 @@
 using eCommerce.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,8 +46,25 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
     options.SlidingExpiration = true;
 });
+builder.Services.AddScoped<AppDbInitializer, AppDbInitializer>();
 
 var app = builder.Build();
+
+SeedDatabase();
+
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+        try
+        {
+            var scopedContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            AppDbInitializer.Seed(scopedContext);
+        }
+        catch
+        {
+            throw;
+        }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
