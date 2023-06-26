@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using eCommerce.Data.Base;
+using System.ComponentModel.DataAnnotations;
 
 namespace eCommerce.Models
 {
-    public class Product
+    public class Product: IEntityBase
     {
         public int Id { get; set; }
 
