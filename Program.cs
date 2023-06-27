@@ -12,8 +12,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -52,9 +54,23 @@ var app = builder.Build();
 
 SeedDatabase();
 
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+    string role = "Admin";
+    if (!(await roleManager.RoleExistsAsync(role)))
+    {
+        await roleManager.CreateAsync(new IdentityRole(role));
+    }
+}
+
+
 void SeedDatabase()
 {
-    using (var scope = app.Services.CreateScope())
+        using (var scope = app.Services.CreateScope())
+
         try
         {
             var scopedContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -65,6 +81,7 @@ void SeedDatabase()
             throw;
         }
 }
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
