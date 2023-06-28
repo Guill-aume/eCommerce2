@@ -1,5 +1,6 @@
 ﻿using eCommerce.Data;
 using eCommerce.Data.Services;
+using eCommerce.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -23,6 +24,24 @@ namespace eCommerce.Controllers
         {
             var productDetail = await _service.GetProductByIdAsync(id);
             return View(productDetail);
+        }
+
+        //Get: Products/Create
+        public IActionResult Create()
+        {
+            ViewData["Welcome"] = "Welcome to our store";
+            ViewBag.Description = "This is my store descripiton";
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(NewProductVM product)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(product);
+            }
+            await _service.AddNewProductAsync(product);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

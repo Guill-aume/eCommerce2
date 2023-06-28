@@ -11,6 +11,18 @@ namespace eCommerce.Data.Services
             _context = context;   
         }
 
+        public  async Task AddNewProductAsync(NewProductVM data)
+        {
+            var newProduct = new Product() { 
+            Name = data.Name,
+            Description = data.Description,
+            Price = data.Price,
+            ImageURl = data.ImageURl
+            };
+            _context.Products.Add(newProduct);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<Product> GetProductByIdAsync(int id)
         {
             var productDetails =  _context.Products.FirstOrDefault(x => x.Id == id);
