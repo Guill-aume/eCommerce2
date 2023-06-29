@@ -1,4 +1,3 @@
-﻿using eCommerce.Data;
 using eCommerce.Data.Services;
 using eCommerce.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +17,6 @@ namespace eCommerce.Controllers
             var data = await _service.GetAllAsync();   
             return View(data);
         }
-
         //Get: Products/Details/1
         public async Task<IActionResult> Details(int id)
         {
