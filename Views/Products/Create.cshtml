@@ -1,0 +1,62 @@
+﻿@model NewProductVM
+@{
+    ViewData["Title"] = "Create a new product";
+}
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h4>Create a new product</h4>
+        </p>
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                    <input asp-for="Name" class="form-control" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Description" class="control-label"></label>
+                                <textarea asp-for="Description" class="form-control"></textarea>                                   
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Price" class="control-label"></label>
+                                    <input asp-for="Price" type="number" class="form-control" />
+                                    <span asp-validation-for="Price" class="text-danger"></span>
+                                
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ImageURl" class="control-label"></label>
+                                    <input asp-for="ImageURl" class="form-control" />
+                                    <span asp-validation-for="ImageURl" class="text-danger"></span>
+                                
+                            </div>
+                            <div class="col-md-4 offset-4 text-center">
+                               <img width="100%" id="ImageURLPreview" />
+                           </div>
+                           <div class="form-group">
+                               <input type="submit" value="Create" class="btn btn-outline-success float-right" />
+                               <a class="btn btn-outline-primary" asp-action="Index">Show all</a>
+                           </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $("ImageURL").on("change", function(){
+            var output = document.getElementById("ImageURLPreview");
+            output.src = $(this).val();
+        })
+    </script>
+}
+
