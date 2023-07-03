@@ -1,3 +1,5 @@
+using Braintree;
+using BraintreePaymentCore.Web.Utility.PaymentGateway;
 using eCommerce.Data;
 using eCommerce.Data.Cart;
 using eCommerce.Data.Services;
@@ -23,9 +25,9 @@ builder.Services.AddScoped<IOrdersService, OrdersService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
 builder.Services.AddSession();
+builder.Services.AddTransient<IBraintreeConfiguration, BraintreeConfiguration>();
 
 builder.Services.AddControllersWithViews();
-
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
