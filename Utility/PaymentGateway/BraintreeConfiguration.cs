@@ -1,4 +1,5 @@
 ﻿using Braintree;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,17 +18,17 @@ namespace BraintreePaymentCore.Web.Utility.PaymentGateway
 
         public IBraintreeGateway CreateGateway()
         {
-            Environment = System.Environment.GetEnvironmentVariable("BraintreeEnvironment");
-            MerchantId = System.Environment.GetEnvironmentVariable("BraintreeMerchantId");
-            PublicKey = System.Environment.GetEnvironmentVariable("BraintreePublicKey");
-            PrivateKey = System.Environment.GetEnvironmentVariable("BraintreePrivateKey");
+            Environment = System.Configuration.ConfigurationManager.AppSettings["BraintreeEnvironment"];
+            MerchantId = System.Configuration.ConfigurationManager.AppSettings["BraintreeMerchantId"];
+            PublicKey = System.Configuration.ConfigurationManager.AppSettings["BraintreePublicKey"];
+            PrivateKey = System.Configuration.ConfigurationManager.AppSettings["BraintreePrivateKey"];
 
             if (MerchantId == null || PublicKey == null || PrivateKey == null)
             {
-                Environment = "sandbox";
-                MerchantId = "9j4ynyf697k9685t";
-                PublicKey = "25sy94dv3rqgg355";
-                PrivateKey = "b0d5e1b1fa9dc24c263a3e83a148a7b3";
+                Environment = "SANDBOX";
+                MerchantId = "gvxpthbmygvvsprx";
+                PublicKey = "38n7ggb9vcc36p3r";
+                PrivateKey = "8ee6e4c780607b7979fc97389c3289ae";
             }
 
             return new BraintreeGateway(Environment, MerchantId, PublicKey, PrivateKey);

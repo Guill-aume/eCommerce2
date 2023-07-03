@@ -1,4 +1,5 @@
-﻿@model eCommerce.Models.vmCheckout
+﻿@using eCommerce.Data.ViewModels
+@model CheckoutVM
 
 @{
     ViewData["Title"] = "Purchase";
@@ -6,16 +7,9 @@
 
 <div class="wrapper">
     <div class="checkout container">
-        <form id="payment-form" method="post" asp-controller="Payment" asp-action="Checkout">
-            @Html.HiddenFor(n => n.Id)
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title" name="Title" asp-for="@Model.OrderItems[0].Product.Name">@Model.OrderItems[0].Product.Name</h5>
-                    <p class="card-text">@Model.OrderItems[0].Product.Description</p>
-                    <p class="card-text"><small class="text-muted">Price: @Model.Price</small></p>
-                </div>
-                <img style="width: 90%" class="card-img-bottom" src="@Model.OrderItems[0].Product.ImageURl" alt="image cap">
-            </div>
+        <form id="payment-form" method="post" asp-controller="Payments" asp-action="Checkout">
+            @Html.HiddenFor(n => n.ShoppingCartId)
+            @Html.HiddenFor(n => n.TotalPrice)
             <section>
                 <div class="bt-drop-in-wrapper">
                     <div id="bt-dropin"></div>
@@ -23,16 +17,10 @@
             </section>
             @Html.HiddenFor(n => n.PaymentMethodNonce, new { @id = "nonce" })
             <hr />
-            <button class="btn btn-success" type="submit"><span>Confirm payment - $@Model.Price</span></button>
+            <button class="btn btn-success" type="submit"><span>Confirm payment - $@Model.TotalPrice</span></button>
         </form>
     </div>
 </div>
-<section>
-    <div class="bt-drop-in-wrapper">
-        <div id="bt-dropin"></div>
-    </div>
-</section>
-@Html.HiddenFor(n => n.PaymentMethodNonce, new { @id = "nonce" })
 <hr />
 <script src="https://js.braintreegateway.com/web/dropin/1.22.0/js/dropin.min.js"></script>
 <script>
