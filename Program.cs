@@ -1,3 +1,5 @@
+using Braintree;
+using BraintreePaymentCore.Web.Utility.PaymentGateway;
 using eCommerce.Data;
 using eCommerce.Data.Services;
 using Microsoft.AspNetCore.Identity;
@@ -17,6 +19,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 //Add services
 builder.Services.AddScoped<IProductsService, ProductsService>();
+builder.Services.AddTransient<IBraintreeConfiguration, BraintreeConfiguration>();
 
 builder.Services.AddControllersWithViews();
 
