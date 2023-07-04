@@ -21,11 +21,8 @@ namespace eCommerce.Controllers
 
         public async Task<IActionResult> Index()
         {
-           // string userId = User.Identity.Name;
-           // string a = User.GetUserId();
-            string email = User.Identity.Name;//this.User.FindFirst(ClaimTypes.NameIdentifier).ToString();
-
-          //  userId = userId.Substring(70);
+           
+            string email = User.Identity.Name;
             var orders = await _ordersService.GetOrdersByEmailAsync(email);
             return View(orders); 
         }
