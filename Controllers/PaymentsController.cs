@@ -4,6 +4,7 @@ using Braintree;
 using eCommerce.Data.Cart;
 using eCommerce.Data.ViewModels;
 using eCommerce.Models;
+using Newtonsoft.Json.Linq;
 
 namespace eCommerce.Controllers
 {
@@ -72,10 +73,10 @@ namespace eCommerce.Controllers
             Result<Transaction> result = gateway.Transaction.Sale(request);
             if (result.IsSuccess())
             {
-                paymentStatus = "Succeded" + " | TransactionStatus: " + result.Transaction.Status.ToString();
+                paymentStatus = "Succeded" + " | TransactionStatus: " + result.Target.Status.ToString();
 
                 //Do Database Operations Here
-                string ShoppingCartId = result.Transaction.OrderId;
+                string ShoppingCartId = result.Target.OrderId;
             }
             else
             {
@@ -90,6 +91,7 @@ namespace eCommerce.Controllers
 
             return paymentStatus;
         }
+
 
     }
     
