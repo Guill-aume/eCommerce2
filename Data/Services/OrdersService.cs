@@ -10,9 +10,10 @@ namespace eCommerce.Data.Services
         {
             _context = context;   
         }
-        public async Task<List<Order>> GetOrdersByUserIdAsync(string userId)
+        public async Task<List<Order>> GetOrdersByEmailAsync(string email)
         {
-            var orders = await _context.Orders.Include(n => n.OrderItems).ThenInclude(n => n.Product).Where(n => n.UserId == userId).ToListAsync();
+            var orders = await _context.Orders.Include(n => n.OrderItems).ThenInclude(n => n.Product).Where(n => n.Email == 
+            email).ToListAsync();
             return orders;
         }
 
