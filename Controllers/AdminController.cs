@@ -9,6 +9,7 @@ using eCommerce.Data;
 using eCommerce.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace eCommerce.Controllers
 {
@@ -17,7 +18,6 @@ namespace eCommerce.Controllers
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
-
         public AdminController(ApplicationDbContext context)
         {
             _context = context;

@@ -3,6 +3,7 @@ using eCommerce.Data.Cart;
 using eCommerce.Data.Services;
 using eCommerce.Data.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace eCommerce.Controllers
 {
@@ -16,6 +17,14 @@ namespace eCommerce.Controllers
             _productsService = productsService;
             _shoppingCart = shoppingCart;
             _ordersService = ordersService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+           
+            string email = User.Identity.Name;
+            var orders = await _ordersService.GetOrdersByEmailAsync(email);
+            return View(orders); 
         }
         public IActionResult ShoppingCart()
         {
@@ -50,14 +59,13 @@ namespace eCommerce.Controllers
 
         public async Task<IActionResult> CompleteOrder(int id)
         {
-            var items =  _shoppingCart.GetShoppingCartItems();
+            var items =  _shoppingCart.GetShoppingCartItems();           
             string userId = "";
-            string userEmailAddress = "";
-
+            string userEmailAddress = User.Identity.Name; 
             await _ordersService.StoreOrderAsync(items,userId,userEmailAddress);
             await _shoppingCart.ClearShoppingCartAsync();
 
-            return View("Order Completed");
+            return View("OrderCompleted");
         }
     }
 }
