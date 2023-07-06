@@ -1,5 +1,6 @@
 ﻿using Braintree;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -15,13 +16,17 @@ namespace BraintreePaymentCore.Web.Utility.PaymentGateway
         public string PublicKey { get; set; }
         public string PrivateKey { get; set; }
         private IBraintreeGateway BraintreeGateway { get; set; }
-
+        private readonly IConfiguration _configuration;
+        public BraintreeConfiguration(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
         public IBraintreeGateway CreateGateway()
         {
-            Environment = System.Configuration.ConfigurationManager.AppSettings["BraintreeEnvironment"];
-            MerchantId = System.Configuration.ConfigurationManager.AppSettings["BraintreeMerchantId"];
-            PublicKey = System.Configuration.ConfigurationManager.AppSettings["BraintreePublicKey"];
-            PrivateKey = System.Configuration.ConfigurationManager.AppSettings["BraintreePrivateKey"];
+            Environment = _configuration["BraintreeGateway:Environment"];
+            MerchantId = _configuration["BraintreeGateway:MerchantId"];
+            PublicKey = _configuration["BraintreeGateway:PublicKey"];
+            PrivateKey = _configuration["BraintreeGateway:PrivateKey"];
 
             if (MerchantId == null || PublicKey == null || PrivateKey == null)
             {

@@ -11,15 +11,18 @@ namespace eCommerce.Controllers
 {
     public class PaymentsController : Controller
     {
-        public IBraintreeConfiguration _brainTreeConfig = new BraintreeConfiguration();
+        public IBraintreeConfiguration _brainTreeConfig;
         private readonly ShoppingCart _shoppingCart;
         private readonly IOrdersService _ordersService;
+        private readonly IConfiguration _configuration;
 
-        public PaymentsController(IBraintreeConfiguration braintreeConfiguration, ShoppingCart shoppingCart, IOrdersService ordersService)
+        public PaymentsController(IBraintreeConfiguration braintreeConfiguration, ShoppingCart shoppingCart, IOrdersService ordersService, IConfiguration configuration)
         {
             _brainTreeConfig = braintreeConfiguration;
             _shoppingCart = shoppingCart;
             _ordersService = ordersService;
+            _configuration = configuration;
+            _brainTreeConfig = new BraintreeConfiguration(_configuration);
         }
 
         public IActionResult Payment()
@@ -62,10 +65,9 @@ namespace eCommerce.Controllers
         {
             string paymentStatus = string.Empty;
             var gateway = _brainTreeConfig.GetGateway();
-
             var request = new TransactionRequest
             {
-                Amount = (int)model.TotalPrice,
+                Amount = decimal.Parse(model.TotalPrice.ToString()),
                 PaymentMethodNonce = model.PaymentMethodNonce,
                 OrderId = model.ShoppingCartId,
                 Options = new TransactionOptionsRequest
