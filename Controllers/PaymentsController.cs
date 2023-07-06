@@ -5,17 +5,24 @@ using eCommerce.Data.Cart;
 using eCommerce.Data.ViewModels;
 using eCommerce.Models;
 using Newtonsoft.Json.Linq;
+using eCommerce.Data.Services;
 
 namespace eCommerce.Controllers
 {
     public class PaymentsController : Controller
     {
-        public IBraintreeConfiguration _brainTreeConfig = new BraintreeConfiguration();
+        public IBraintreeConfiguration _brainTreeConfig;
         private readonly ShoppingCart _shoppingCart;
-        public PaymentsController(IBraintreeConfiguration braintreeConfiguration, ShoppingCart shoppingCart)
+        private readonly IOrdersService _ordersService;
+        private readonly IConfiguration _configuration;
+
+        public PaymentsController(IBraintreeConfiguration braintreeConfiguration, ShoppingCart shoppingCart, IOrdersService ordersService, IConfiguration configuration)
         {
             _brainTreeConfig = braintreeConfiguration;
             _shoppingCart = shoppingCart;
+            _ordersService = ordersService;
+            _configuration = configuration;
+            _brainTreeConfig = new BraintreeConfiguration(_configuration);
         }
 
         public IActionResult Payment()
@@ -31,7 +38,7 @@ namespace eCommerce.Controllers
                 PaymentMethodNonce = ""
             };
 
-            return View(data); //
+            return View(data);
         }
 
         public static readonly TransactionStatus[] transactionSuccessStatuses =
@@ -54,14 +61,13 @@ namespace eCommerce.Controllers
         }
 
         [HttpPost, Route("Checkout")]
-        public object Checkout(CheckoutVM model)
+        public async Task<IActionResult> Checkout(CheckoutVM model)
         {
             string paymentStatus = string.Empty;
             var gateway = _brainTreeConfig.GetGateway();
-
             var request = new TransactionRequest
             {
-                Amount = (int)model.TotalPrice,
+                Amount = decimal.Parse(model.TotalPrice.ToString()),
                 PaymentMethodNonce = model.PaymentMethodNonce,
                 OrderId = model.ShoppingCartId,
                 Options = new TransactionOptionsRequest
@@ -77,6 +83,14 @@ namespace eCommerce.Controllers
 
                 //Do Database Operations Here
                 string ShoppingCartId = result.Target.OrderId;
+                var items = _shoppingCart.GetShoppingCartItems();
+                string userId = "";
+                string userEmailAddress = "";
+
+                await _ordersService.StoreOrderAsync(items, userId, userEmailAddress);
+                await _shoppingCart.ClearShoppingCartAsync();
+
+                return View("~/Views/Orders/OrderCompleted.cshtml");
             }
             else
             {
@@ -89,10 +103,20 @@ namespace eCommerce.Controllers
                 paymentStatus = errorMessages;
             }
 
-            return paymentStatus;
+            return View("PaymentError",paymentStatus);
         }
 
+        public async Task<IActionResult> CompleteOrder(string id)
+        {
+            var items = _shoppingCart.GetShoppingCartItems();
+            string userId = "";
+            string userEmailAddress = "";
 
+            await _ordersService.StoreOrderAsync(items, userId, userEmailAddress);
+            await _shoppingCart.ClearShoppingCartAsync();
+
+            return View("~Views/Orders/OrderCompleted");
+        }
     }
     
 }

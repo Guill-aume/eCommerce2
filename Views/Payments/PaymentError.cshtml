@@ -1,0 +1,21 @@
+﻿ 
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment WebHostEnvironment
+@if (WebHostEnvironment.IsDevelopment())
+{
+    <div>@Model</div>
+}
+<div class="row">
+    <div class="col-md-6 offset-3">
+        <h2>Payment failed</h2>
+        <p></p>
+        <hr/>
+    </div>
+
+    <div class="text-center">
+            <div class="btn-group">
+                <a class="btn btn-outline-success" asp-controller="Orders" asp-action="ShoppingCart">
+                    Back to Shopping Cart
+                </a>
+            </div>
+        </div>
+</div>
