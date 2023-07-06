@@ -2,7 +2,56 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section id="service">
+    <h1 class="text-center">PRODUCTS</h1>
+    <div class="container-fluid" id="service-container">
+        <div class="row" id="banner-row">
+            <div class="col-md-4" id="service-col1">
+                <img src="https://cdn-icons-png.flaticon.com/512/80/80761.png"
+                     class="img-fluid rounded mx-auto d-block"
+                     alt="..."
+                     width="300" height="300" />
+                <h3>Electronic Devices</h3>
+
+                <p>
+                    Computers.
+                    TV.
+                    Communication.
+                    Everything without which it is impossible to imagine life today.
+                </p>
+
+            </div>
+            <div class="col-md-4" id="service-col2">
+                <img src="https://cdn-icons-png.flaticon.com/512/2972/2972053.png"
+                     class="img-fluid rounded mx-auto d-block"
+                     alt="..."
+                     width="300" height="300" />
+                <h3>Household</h3>
+
+                <p>
+                    Tableware.
+                    Detergents.
+                    Decorations.
+                    Goods with which a house becomes a home.
+                </p>
+
+            </div>
+            <div class="col-md-4" id="service-col3">
+                <img src="https://cdn-icons-png.flaticon.com/512/165/165674.png"
+                     class="img-fluid rounded mx-auto d-block"
+                     alt="..."
+                     width="300" height="300" />
+                <h3>Furniture</h3>
+
+                <p>
+                    Kitchen.
+                    Hall.
+                    Living room.
+                    Furnish your home to your taste in just a few clicks.
+                </p>
+
+            </div>
+        </div>
+    </div>
+</section>
+<h1><a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Look at our products now!</a></h1>

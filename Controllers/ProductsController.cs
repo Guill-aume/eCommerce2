@@ -21,7 +21,10 @@ namespace eCommerce.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var productDetail = await _service.GetProductByIdAsync(id);
-            return View(productDetail);
+            if (productDetail != null)
+                return View(productDetail);
+            else
+                return RedirectToAction(nameof(Index));
         }
 
         //Get: Products/Create
