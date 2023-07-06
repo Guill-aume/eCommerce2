@@ -6,6 +6,7 @@ using eCommerce.Data.ViewModels;
 using eCommerce.Models;
 using Newtonsoft.Json.Linq;
 using eCommerce.Data.Services;
+using Microsoft.AspNet.Identity;
 
 namespace eCommerce.Controllers
 {
@@ -84,8 +85,8 @@ namespace eCommerce.Controllers
                 //Do Database Operations Here
                 string ShoppingCartId = result.Target.OrderId;
                 var items = _shoppingCart.GetShoppingCartItems();
-                string userId = "";
-                string userEmailAddress = "";
+                string userId = User.Identity.GetUserId();
+                string userEmailAddress = User.Identity.Name;
 
                 await _ordersService.StoreOrderAsync(items, userId, userEmailAddress);
                 await _shoppingCart.ClearShoppingCartAsync();
