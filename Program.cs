@@ -1,11 +1,9 @@
-using Braintree;
 using BraintreePaymentCore.Web.Utility.PaymentGateway;
 using eCommerce.Data;
 using eCommerce.Data.Cart;
 using eCommerce.Data.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
